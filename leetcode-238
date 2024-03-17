@@ -49,3 +49,24 @@ class Solution {
         return res;
     }
 }
+
+Follow up: Can you solve the problem in O(1) extra space complexity? (The output array does not count as extra space for space complexity analysis.)
+
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int[] res = new int[nums.length];
+        //left;
+        int dp = 1;
+        res[0] = 1;
+        for(int i = 1; i < nums.length; i++){
+            dp = dp * nums[i-1];
+            res[i] = dp;
+        }
+        dp = 1;
+        for(int i = nums.length-2; i >= 0 ; i--){
+            dp = dp * nums[i+1];
+            res[i] *= dp;    
+        }
+        return res;
+    }
+}
