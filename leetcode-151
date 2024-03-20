@@ -1,0 +1,93 @@
+Reverse Words in a String  Medium
+
+Given an input string s, reverse the order of the words.
+A word is defined as a sequence of non-space characters. The words in s will be separated by at least one space.
+Return a string of the words in reverse order concatenated by a single space.
+Note that s may contain leading or trailing spaces or multiple spaces between two words. The returned string should only have a single space separating the words. Do not include any extra spaces.
+
+Example 1:
+Input: s = "the sky is blue"
+Output: "blue is sky the"
+
+Example 2:
+Input: s = "  hello world  "
+Output: "world hello"
+Explanation: Your reversed string should not contain leading or trailing spaces.
+
+Example 3:
+Input: s = "a good   example"
+Output: "example good a"
+Explanation: You need to reduce multiple spaces between two words to a single space in the reversed string.
+
+Constraints:
+1 <= s.length <= 104
+s contains English letters (upper-case and lower-case), digits, and spaces ' '.
+There is at least one word in s.
+
+//采用之前做过的rotate array的方法 reverse a word，then reverse all the word
+class Solution {
+    public String reverseWords(String s) {
+        int start = 0;
+        int end = 0;
+        StringBuilder sb = new StringBuilder();
+        StringBuilder cur = new StringBuilder();
+        for(int i = 0; i < s.length(); i++){
+            if(s.charAt(i) == ' '){
+                if(cur.length() == 0){
+                    continue;
+                } else {
+                    cur.reverse();
+                    sb.append(cur);
+                    sb.append(" ");
+                    cur = new StringBuilder();
+                }
+            }else {
+                cur.append(s.charAt(i));
+            }
+        }
+        if(cur.length() > 0){
+            cur.reverse();
+            sb.append(cur); 
+        } else {
+            sb.deleteCharAt(sb.length()-1);
+        }
+        sb.reverse();
+        return sb.toString();
+    }
+    public StringBuilder reverseAWord(String word){
+        StringBuilder sb = new StringBuilder();
+        for(int i = word.length(); i >= 0; i--){
+            sb.append(word.charAt(i));
+        }
+        return sb;
+    }
+}
+
+
+//或者从后向前遍历，遇到space，就把两个space之间的character取出来放到StringBuilder中
+
+class Solution {
+    public String reverseWords(String s) {
+        int start = s.length();
+        int end = s.length();
+        StringBuilder sb = new StringBuilder();
+        for(int i = s.length()-1; i >= 0; i--){
+            if(s.charAt(i) == ' '){
+                if(start != end){
+                    sb.append(" ");
+                    sb.append(s.substring(start, end));
+                }
+                start = i;
+                end = i;
+            } else {
+                start = i;
+            }
+        }
+        if(start != end){
+            sb.append(" ");
+            sb.append(s.substring(start, end));
+        }
+        sb.deleteCharAt(0);
+        return sb.toString();
+    }
+}
