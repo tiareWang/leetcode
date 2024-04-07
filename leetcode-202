@@ -1,0 +1,69 @@
+Happy Number  Easy
+
+Write an algorithm to determine if a number n is happy.
+A happy number is a number defined by the following process:
+Starting with any positive integer, replace the number by the sum of the squares of its digits.
+Repeat the process until the number equals 1 (where it will stay), or it loops endlessly in a cycle which does not include 1.
+Those numbers for which this process ends in 1 are happy.
+Return true if n is a happy number, and false if not.
+
+Example 1:
+Input: n = 19
+Output: true
+Explanation:
+12 + 92 = 82
+82 + 22 = 68
+62 + 82 = 100
+12 + 02 + 02 = 1
+
+Example 2:
+Input: n = 2
+Output: false
+
+Constraints:
+1 <= n <= 231 - 1
+
+//这里忘记了如何不断分解int，实际可以从最小数值开始分解，不必知道最大多少
+class Solution {
+    public boolean isHappy(int n) {
+        Set set = new HashSet<Integer>();
+        while(!set.contains(n)){
+            set.add(n);
+            String cur = String.valueOf(n);
+            n = 0;
+            for(int i = 0; i < cur.length(); i++){
+                int num = Integer.parseInt(String.valueOf(cur.charAt(i)));
+                n += num*num;
+            }
+            if(n == 1){
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+//如果是循环的话，就像LinkedList循环一样是一个cycle，就可以用快慢指针解决
+class Solution {
+    public boolean isHappy(int n) {
+        int fast = n;
+        int slow = n;
+        do{
+            fast = findsquare(findsquare(fast));
+            slow = findsquare(slow);
+        } while(fast != slow);
+        if(slow == 1){
+            return true;
+        }
+        return false;
+    }
+    public int findsquare(int n){
+        int res = 0;
+        while(n != 0){
+            int remainder = n % 10;
+            n = n / 10;
+            res += remainder*remainder;
+        }
+        return res;
+    }
+}
