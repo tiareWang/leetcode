@@ -1,0 +1,113 @@
+Add Two Numbers   Medium
+
+You are given two non-empty linked lists representing two non-negative integers. 
+The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.
+You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+
+Example 1:
+Input: l1 = [2,4,3], l2 = [5,6,4]
+Output: [7,0,8]
+Explanation: 342 + 465 = 807.
+
+Example 2:
+Input: l1 = [0], l2 = [0]
+Output: [0]
+
+Example 3:
+Input: l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]
+Output: [8,9,9,9,0,0,0,1]
+ 
+Constraints:
+The number of nodes in each linked list is in the range [1, 100].
+0 <= Node.val <= 9
+It is guaranteed that the list represents a number that does not have leading zeros.
+
+solution1:
+非常冗长
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode res = new ListNode(0);
+        ListNode cur = res;
+        int add = 0;
+        while(l1 != null && l2 != null){
+            int sum = l1.val + l2.val + add;
+            if(sum >= 10){
+                add = 1;
+                cur.next = new ListNode(sum%10);
+            } else{
+                add = 0;
+                cur.next = new ListNode(sum);
+            }
+            cur = cur.next;
+            l1 = l1.next;
+            l2 = l2.next;
+        }
+        while(l1 != null){
+            int sum = l1.val + add;
+            if(sum >= 10){
+                add = 1;
+                cur.next = new ListNode(sum % 10);
+            } else {
+                add = 0;
+                cur.next = new ListNode(sum);
+            }
+            cur = cur.next;
+            l1 = l1.next;
+        }
+        while(l2 != null){
+            int sum = l2.val + add;
+            if(sum >= 10){
+                add = 1;
+                cur.next = new ListNode(sum % 10);
+            } else {
+                add = 0;
+                cur.next = new ListNode(sum);
+            }
+            cur = cur.next;
+            l2 = l2.next;
+        }
+        if(add == 1){
+            cur.next = new ListNode(1);
+        }
+        return res.next;
+        
+    }
+}
+
+solution2:
+through add 2 constant space to reduce time
+代码也会变得非常简洁
+
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode res = new ListNode(0);
+        ListNode cur = res;
+        int add = 0;
+        while(l1 != null || l2 != null){
+            int num1 = 0;
+            int num2 = 0;
+            if(l1 != null){
+                num1 = l1.val;
+                l1 = l1.next;
+            }
+            if(l2 != null){
+                num2 = l2.val;
+                l2 = l2.next;
+            }
+            int sum = num1 + num2 + add;
+            if(sum >= 10){
+                add = 1;
+                cur.next = new ListNode(sum%10);
+            } else{
+                add = 0;
+                cur.next = new ListNode(sum);
+            }
+            cur = cur.next;
+        }
+        if(add == 1){
+            cur.next = new ListNode(1);
+        }
+        return res.next;
+        
+    }
+}
