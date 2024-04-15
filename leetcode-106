@@ -1,0 +1,38 @@
+106. Construct Binary Tree from Inorder and Postorder Traversal  Medium
+
+Given two integer arrays inorder and postorder where inorder is the inorder traversal of a binary tree 
+and postorder is the postorder traversal of the same tree, construct and return the binary tree.
+
+Example 1:
+Input: inorder = [9,3,15,20,7], postorder = [9,15,7,20,3]
+Output: [3,9,20,null,null,15,7]
+
+Example 2:
+Input: inorder = [-1], postorder = [-1]
+Output: [-1]
+ 
+Constraints:
+1 <= inorder.length <= 3000
+postorder.length == inorder.length
+-3000 <= inorder[i], postorder[i] <= 3000
+inorder and postorder consist of unique values.
+Each value of postorder also appears in inorder.
+inorder is guaranteed to be the inorder traversal of the tree.
+postorder is guaranteed to be the postorder traversal of the tree.
+
+class Solution {
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        if(inorder.length == 0){
+            return null;
+        }
+        int len = inorder.length;
+        TreeNode root = new TreeNode(postorder[len-1]);
+        for(int i = 0; i < inorder.length; i++){
+            if(inorder[i] == root.val){
+                root.left = buildTree(Arrays.copyOfRange(inorder, 0, i),Arrays.copyOfRange(postorder, 0, i));
+                root.right = buildTree(Arrays.copyOfRange(inorder, i+1, len),Arrays.copyOfRange(postorder, i, len-1));
+            }
+        }
+        return root;
+    }
+}
