@@ -1,0 +1,49 @@
+300. Longest Increasing Subsequence  Medium
+
+Given an integer array nums, return the length of the longest strictly increasing subsequence.
+
+Example 1:
+Input: nums = [10,9,2,5,3,7,101,18]
+Output: 4
+Explanation: The longest increasing subsequence is [2,3,7,101], therefore the length is 4.
+
+Example 2:
+Input: nums = [0,1,0,3,2,3]
+Output: 4
+
+Example 3:
+Input: nums = [7,7,7,7,7,7,7]
+Output: 1
+
+Constraints:
+1 <= nums.length <= 2500
+-104 <= nums[i] <= 104
+ 
+
+Follow up: Can you come up with an algorithm that runs in O(n log(n)) time complexity?
+
+//In this problem, the DP array dp is used to keep track of the length of 
+//the longest increasing subsequence ending at each index i.
+//最开始设定dp的思路很重要，dp要不然是到目前为止，要不然是必须包含该值
+//错误点：忘记把所有的dp初始值都设为1，因为如果它比之前的所有数值都小，它也有自己本身，所以为1
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        if(nums.length < 2){
+            return nums.length;
+        }
+        int[] dp = new int[nums.length+1];
+        int res = 1;
+        for(int i = 0; i <= nums.length; i++){
+            dp[i]=1;
+        }
+        for(int i = 1; i < nums.length; i++){
+            for(int j = 0; j < i; j++){
+                if(nums[j] < nums[i]){
+                    dp[i+1] = Math.max(dp[i+1], dp[j+1]+1);
+                }
+            }
+            res = Math.max(res, dp[i+1]);
+        }
+        return res;
+    }
+}
