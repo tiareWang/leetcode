@@ -1,0 +1,46 @@
+5. Longest Palindromic Substring  Medium
+
+Given a string s, return the longest palindromic substring in s.
+
+Example 1:
+Input: s = "babad"
+Output: "bab"
+Explanation: "aba" is also a valid answer.
+
+Example 2:
+Input: s = "cbbd"
+Output: "bb"
+
+Constraints:
+1 <= s.length <= 1000
+s consist of only digits and English letters.
+
+class Solution {
+    public String longestPalindrome(String s) {
+        String maxStr = "";
+        for(int i = 0; i < s.length(); i++){
+            String str1 = findPalindrome(i, i, s);
+            if(str1.length() > maxStr.length()){
+                maxStr = str1;
+            }
+            if(i+1 < s.length() && s.charAt(i) == s.charAt(i+1)){
+                String str2 = findPalindrome(i, i+1, s);
+                if(str2.length() > maxStr.length()){
+                    maxStr = str2;
+                }
+            }
+        }
+        return maxStr;
+    }
+    public String findPalindrome(int left, int right, String s){
+        if(left < 0 || right >= s.length()){
+            return s.substring(left+1, right);
+        }
+        if(s.charAt(left) == s.charAt(right)){
+            left--;
+            right++;
+            return findPalindrome(left, right, s);
+        }
+        return s.substring(left+1, right);
+    }
+}
