@@ -1,0 +1,33 @@
+201. Bitwise AND of Numbers Range  Medium
+
+Given two integers left and right that represent the range [left, right], return the bitwise AND of all numbers in this range, inclusive.
+
+Example 1:
+Input: left = 5, right = 7
+Output: 4
+
+Example 2:
+Input: left = 0, right = 0
+Output: 0
+
+Example 3:
+Input: left = 1, right = 2147483647
+Output: 0
+
+Constraints:
+0 <= left <= right <= 231 - 1
+
+class Solution {
+    //找到left和right最大的common就好，里面的数字肯定也是这个最大common(可以通过右移的方法)，
+    //common以内的&之后都是0，计算common以外的数值空余处补充0即可
+    //或者左和右都往右移动，移动到左右数值都相等了，剩下的数值就是相同的部分，再将移动的位数记录并补上
+    public int rangeBitwiseAnd(int left, int right) {
+        int count = 0;
+        while(left != right){
+            left >>= 1;
+            right >>= 1;
+            count++;
+        }
+        return left << count;
+    }
+}
