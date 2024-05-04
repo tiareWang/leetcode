@@ -1,0 +1,75 @@
+221. Maximal Square  Medium
+
+Given an m x n binary matrix filled with 0's and 1's, find the largest square containing only 1's and return its area.
+
+Example 1:
+Input: matrix = [["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]
+Output: 4
+
+Example 2:
+Input: matrix = [["0","1"],["1","0"]]
+Output: 1
+
+Example 3:
+Input: matrix = [["0"]]
+Output: 0
+
+Constraints:
+m == matrix.length
+n == matrix[i].length
+1 <= m, n <= 300
+matrix[i][j] is '0' or '1'.
+
+class Solution {
+    //dp[i][j]是指i行j列下的最大square的边长
+    public int maximalSquare(char[][] matrix) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int maxLen = 0;
+        int[][] dp = new int[m][n];
+        for(int i = 0; i < m; i++){
+            if(matrix[i][0] == '1'){
+                dp[i][0] = 1;
+                maxLen = 1;
+            }
+        }
+        for(int i = 0; i < n; i++){
+            if(matrix[0][i] == '1'){
+                dp[0][i] = 1;
+                maxLen = 1;
+            }
+        }
+        for(int i = 1; i < m; i++){
+            for(int j = 1; j < n; j++){
+                if(matrix[i][j] == '0'){
+                    dp[i][j] = 0;
+                } else {
+                    dp[i][j] = Math.min(dp[i-1][j], Math.min(dp[i][j-1], dp[i-1][j-1]))+1;
+                    maxLen = Math.max(maxLen, dp[i][j]);
+                }
+            }
+        }
+        return maxLen * maxLen;
+    }
+}
+//主要问题在于dp代表的内容和其中连续的逻辑很难定位，在这dp代表的是以当前点为右下角点所能出现的最长半径，不需要以面积作为结果
+Approach
+The intuitive way to start a dynamic programming approach is to directly define the result of the subproblem in our memo matrix, i.e.
+
+dp[i][j] = the length of the largest square with its bottom-right corner at [i][j]
+
+Let's examine a simple example to see how the dp matrix is formed by this definition:
+[1 1 1 0
+1 1 1 1
+1 1 1 1]
+According to the above definition, our dp matrix should be:
+[1 1 1 0
+1 2 2 1
+1 2 3 2]
+
+Based on the example above, we can carry out the following base cases:
+
+If matrix[i][j] == 0, dp[i][j] = 0
+Otherwise, if i == 0 or j == 0, dp[i][j] = 1
+The induction rule can also be derived as follows:
+dp[i][j] = min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]) + 1
